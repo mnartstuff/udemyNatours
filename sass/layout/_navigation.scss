@@ -1,0 +1,169 @@
+@use "../abstracts/mixins";
+@use "../abstracts/variables";
+
+.navigation {
+  &__checkbox {
+    display: none;
+  }
+
+  &__button {
+    background-color: variables.$color-white;
+    height: 7rem;
+    width: 7rem;
+    text-align: center;
+    position: fixed;
+    top: 6rem;
+    right: 6rem;
+    border-radius: 50%;
+    z-index: 2000;
+    box-shadow: 0 1rem 3rem rgba(variables.$color-black, .1);
+    cursor: pointer;
+
+    @include mixins.respond(tab-port) {
+      top: 4rem;
+      right: 4rem;
+    }
+    @include mixins.respond(phone) {
+      top: 3rem;
+      right: 3rem;
+    }
+  }
+
+  &__background {
+    height: 6rem;
+    width: 6rem;
+    border-radius: 50%;
+    position: fixed;
+    top: 6.5rem;
+    right: 6.5rem;
+    background-image: radial-gradient(variables.$color-primary-light, variables.$color-primary-dark);
+    z-index: 1000;
+    transition: transform 0.8s cubic-bezier(0.86, 0, 0.7, 1);
+    // transform: scale(80);
+
+    @include mixins.respond(tab-port) {
+      top: 4.5rem;
+      right: 4.5rem;
+    }
+    @include mixins.respond(phone) {
+      top: 3.5rem;
+      right: 3.5rem;
+    }
+  }
+
+  &__nav {
+    height: 100vh;
+    transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 1500;
+    opacity: 0;
+    width: 0;
+  }
+
+  &__list {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    list-style: none;
+    text-align: center;
+    width: 100%; // supposedly to help with the nav sliding in from the right, but I see no effect.
+  }
+
+  &__item {
+    margin: 1rem;
+  }
+
+  &__link {
+    &:link,
+    &:visited {
+      display: inline-block;
+      font-size: 3rem;
+      font-weight: 300;
+      padding: 1rem 2rem;
+      color: variables.$color-white;
+      text-decoration: none;
+      text-transform: uppercase;
+      background-image: linear-gradient(120deg, transparent 0%, transparent 50%, variables.$color-white 50%);
+      background-size: 250%;
+      transition: all 0.4s;
+
+      span {
+        margin-right: 1.4rem;
+        display: inline-block;
+      }
+    }
+
+    &:active,
+    &:hover {
+      background-position: 100%;
+      color: variables.$color-primary-dark;
+      transform: translateX(1rem);
+    }
+  }
+
+  &__checkbox:checked ~ &__background {
+    transform: scale(80);
+  }
+
+  &__checkbox:checked ~ &__nav {
+    width: 100%;
+    opacity: 1;
+  }
+
+  // ICON:
+
+  &__icon {
+    position: relative;
+    margin-top: 3.5rem;
+
+    &,
+    &::before,
+    &::after {
+      width: 3rem;
+      height: 2px;
+      background-color: variables.$color-grey-dark-3;
+      display: inline-block;
+    }
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      transition: all .2s;
+    }
+
+    &::before {
+      top: -.8rem;
+    }
+
+    &::after {
+      top: .8rem;
+    }
+  }
+
+  &__button:hover &__icon::before {
+    top: -1rem;
+  }
+
+  &__button:hover &__icon::after {
+    top: 1rem;
+  }
+
+  &__checkbox:checked + &__button &__icon {
+    background-color: transparent;
+  }
+
+  &__checkbox:checked + &__button &__icon::before {
+    top: 0;
+    transform: rotate(135deg);
+  }
+
+  &__checkbox:checked + &__button &__icon::after {
+    top: 0;
+    transform: rotate(-135deg);
+  }
+
+}
